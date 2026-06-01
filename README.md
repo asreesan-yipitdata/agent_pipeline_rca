@@ -153,23 +153,27 @@ The expected test workflow state is `SUCCESS_WITH_FAILURES`: the failure task fa
 
 This repository can be pushed to GitHub and used directly by Databricks jobs through job-level Git source.
 
-Create and push the GitHub repository:
+GitHub repository:
+
+`https://github.com/asreesan-yipitdata/agent_pipeline_rca`
+
+Clone or push with HTTPS:
 
 ```bash
-git remote add origin git@github.com:<org>/agent_pipeline_rca.git
+git remote add origin https://github.com/asreesan-yipitdata/agent_pipeline_rca
 git push -u origin main
 ```
 
-If using HTTPS instead of SSH:
+Or with SSH:
 
 ```bash
-git remote add origin https://github.com/<org>/agent_pipeline_rca.git
+git remote add origin git@github.com:asreesan-yipitdata/agent_pipeline_rca.git
 git push -u origin main
 ```
 
-After the repo is pushed, configure each Databricks job to use Git source:
+Databricks jobs are configured to use Git source:
 
-- `git_source.git_url = https://github.com/<org>/agent_pipeline_rca.git`
+- `git_source.git_url = https://github.com/asreesan-yipitdata/agent_pipeline_rca`
 - `git_source.git_provider = gitHub`
 - `git_source.git_branch = main`
 - notebook task `source = GIT`
