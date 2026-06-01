@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "resources": [
+    {
+      "type": "job",
+      "name": "agent_pipeline_rca_analyzer",
+      "id": "64152640991709",
+      "created_at": "2026-06-01T09:54:45.941909+00:00",
+      "updated_at": "2026-06-01T09:54:45.941909+00:00"
+    },
+    {
+      "type": "job",
+      "name": "agent_pipeline_rca_test_schema_drift",
+      "id": "849463537683049",
+      "created_at": "2026-06-01T09:54:59.801252+00:00",
+      "updated_at": "2026-06-01T09:54:59.801252+00:00"
+    },
+    {
+      "type": "job",
+      "name": "agent_pipeline_rca_test_missing_table",
+      "id": "909090987640198",
+      "created_at": "2026-06-01T15:41:16.532006+00:00",
+      "updated_at": "2026-06-01T15:41:16.532006+00:00"
+    },
+    {
+      "type": "job",
+      "name": "agent_pipeline_rca_test_data_quality_empty_input",
+      "id": "460414350986683",
+      "created_at": "2026-06-01T15:41:33.367258+00:00",
+      "updated_at": "2026-06-01T15:41:33.367258+00:00"
+    },
+    {
+      "type": "job",
+      "name": "agent_pipeline_rca_test_python_import_error",
+      "id": "991517156600829",
+      "created_at": "2026-06-01T15:41:42.062409+00:00",
+      "updated_at": "2026-06-01T15:41:42.062409+00:00"
+    },
+    {
+      "type": "job",
+      "name": "agent_pipeline_rca_test_permission_denied",
+      "id": "219166312756087",
+      "created_at": "2026-06-01T15:41:45.437474+00:00",
+      "updated_at": "2026-06-01T15:41:45.437474+00:00"
+    }
+  ]
+}
