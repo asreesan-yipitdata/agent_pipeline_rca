@@ -24,6 +24,69 @@ The reusable framework is independent from the test workloads. Existing jobs int
 6. The analyzer calls the configured model endpoint and writes a structured RCA report.
 7. The analyzer sends a Slack message through `yipit_databricks_utils.helpers.notifications.send_slack_notification`.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph ExistingJob["Existing Databricks Job"]
+        A["Pipeline task(s)<br/>ETL, DLT, SQL, notebook, wheel"]
+        B["RCA failure callback task<br/>framework/rca_failure_callback<br/>run_if = AT_LEAST_ONE_FAILED"]
+        A -->|"task fails"| B
+    end
+
+    B -->|"run_now(analyzer_job_id)<br/>source_job_id = {{job.id}}<br/>source_run_id = {{job.run_id}}<br/>slack_channel = job parameter"| C
+
+    subgraph RCAFramework["RCA Framework Job"]
+        C["rca_analyzer<br/>framework/rca_analyzer"]
+        D["rca_lib.run_rca_analysis"]
+        E["Evidence collector"]
+        F["Prompt loader"]
+        G["LLM RCA generator"]
+        H["Report writer"]
+        I["Slack notifier"]
+
+        C --> D
+        D --> E
+        D --> F
+        E --> G
+        F --> G
+        G --> H
+        G --> I
+    end
+
+    subgraph DatabricksContext["Databricks Context"]
+        J["Jobs API<br/>job/run/task metadata"]
+        K["Task output and error logs"]
+        L["Git or workspace source code"]
+        M["Unity Catalog table schemas"]
+    end
+
+    subgraph UnityCatalog["Unity Catalog: yd_etl_dev.etl_sandbox"]
+        N["agent_pipeline_rca_prompts<br/>versioned production prompt"]
+        O["agent_pipeline_rca_events"]
+        P["agent_pipeline_rca_evidence"]
+        Q["agent_pipeline_rca_reports<br/>error_type, description, fixes, confidence"]
+    end
+
+    subgraph ExternalServices["Notification and Model Services"]
+        R["Databricks model serving endpoint"]
+        S["Slack channel<br/>C0B6ZN6C9ST or job parameter"]
+    end
+
+    E --> J
+    E --> K
+    E --> L
+    E --> M
+    F --> N
+    D --> O
+    E --> P
+    G --> R
+    H --> Q
+    I --> S
+```
+
+Integration only requires adding the callback task to the existing job. The source job passes `source_job_id`, `source_run_id`, and `slack_channel`; the analyzer derives the failed task, notebook path, error text, source code, table references, and table schemas from Databricks metadata and logs.
+
 ## Databricks Assets
 
 Workspace paths:
